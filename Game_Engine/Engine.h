@@ -167,6 +167,9 @@ public:
 	//input
 	void OnKeyReleased();
 
+	//lua_scripting
+	void LUA();
+
 	//playGame
 	void Play(sf::Time timeSinceLastUpdate, sf::Time timePerFrame, sf::Time dt);
 
