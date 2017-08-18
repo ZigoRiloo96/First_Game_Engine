@@ -268,6 +268,7 @@ ipch/
 *.cachefile
 *.VC.db
 *.VC.VC.opendb
+*.ini
 
 # Visual Studio profiler
 *.psess
