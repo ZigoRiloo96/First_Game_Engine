@@ -170,34 +170,7 @@ RectangleShape Player::getRS()
 
 
 void Player::update(const float &elapsedTime, std::vector<Object*> &v, std::vector<Collider*> &col)
-{
-	if (!col.empty())
-	{
-		for (Collider* c : col)
-		{
-			if (c->isCollide((IntRect)m_MoveRect))
-			{
-				m_Position = Vector2f(rect.left - 18 * 0.65f, rect.top - 57 * 0.65f);
-				m_MoveRect = (FloatRect)rect;
-			}
-		}
-
-		int size_col = col.size();
-
-		for (Collider* c : col)
-		{
-			if (!c->isCollide((IntRect)m_MoveRect))
-			{
-				size_col--;
-			}
-			if (size_col == 0)
-			{
-				rect = (IntRect)m_MoveRect;
-			}
-		}
-	}
-
-	
+{	
 	//keys move
 	if (m_rightPressed)
 	{
@@ -253,6 +226,31 @@ void Player::update(const float &elapsedTime, std::vector<Object*> &v, std::vect
 	}
 	//end joy move
 
+	if (!col.empty())
+	{
+		for (Collider* c : col)
+		{
+			if (c->isCollide((IntRect)m_MoveRect))
+			{
+				m_Position = Vector2f(rect.left - 18 * 0.65f, rect.top - 57 * 0.65f);
+				m_MoveRect = (FloatRect)rect;
+			}
+		}
+
+		int size_col = col.size();
+
+		for (Collider* c : col)
+		{
+			if (!c->isCollide((IntRect)m_MoveRect))
+			{
+				size_col--;
+			}
+			if (size_col == 0)
+			{
+				rect = (IntRect)m_MoveRect;
+			}
+		}
+	}
 
 	//for (Object* n : v)
 	//{
