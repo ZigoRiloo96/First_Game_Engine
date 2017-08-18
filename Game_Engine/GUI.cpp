@@ -35,6 +35,11 @@ void Engine::GameWindow(bool* p_open)
 	ImGui::SameLine();
 	ImGui::Text("%i", window);
 
+	ImGui::SameLine();
+	if (ImGui::Button("save_colliders")) {
+		testDataSave();
+	}
+
 	ImGui::PushID(0);
 
 	ImGui::Image(sf::Sprite(texture.getTexture()));

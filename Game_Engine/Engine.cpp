@@ -140,6 +140,7 @@ Grid **Engine::gridSetUp(int sizeX, int sizeY, int size)
 
 void Engine::start()
 {
+	testDataLoad();
 	
 	timeSinceLastUpdate = Time::Zero;
 

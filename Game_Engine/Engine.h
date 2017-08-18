@@ -19,6 +19,8 @@
 #include "TileSet.h"
 #include "Collider.h"
 
+#include "sqlite3.h"
+
 using namespace sf;
 
 struct Grid
@@ -168,6 +170,10 @@ public:
 	void OnKeyReleased();
 
 	//lua_scripting
+
+	//SQL
+	void testDataLoad();
+	void testDataSave();
 
 	//playGame
 	void Play(sf::Time timeSinceLastUpdate, sf::Time timePerFrame, sf::Time dt);
