@@ -36,7 +36,12 @@ void Engine::GameWindow(bool* p_open)
 	ImGui::Text("%i", window);
 
 	ImGui::SameLine();
-	if (ImGui::Button("save_colliders")) {
+	if (ImGui::Button("save_colliders",sf::Vector2i(0,12))) {
+		testDataSave();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("save_object", sf::Vector2i(0, 12))) {
 		testDataSave();
 	}
 

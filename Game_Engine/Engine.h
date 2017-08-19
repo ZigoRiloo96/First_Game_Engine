@@ -153,6 +153,10 @@ private:
 	bool isColVisible = true;
 	bool lastVkeyState = false;
 
+	//BEGIN TEXTURES
+	//std::vector<sf::Texture*> textures;
+	sf::Texture* m_pTexture;
+
 public:
 
 	//gameWindow

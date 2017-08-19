@@ -62,6 +62,7 @@ void Engine::input()
 	{
 		if (!lastKeyState)
 		{
+			sf::Vector2i gameMousePos = (sf::Vector2i)texture.mapPixelToCoords(sf::Vector2i((int)gameWindowPosX, (int)gameWindowPosY));
 			//OnKeyClick();
 			//(sf::Vector2i)texture_tile.mapPixelToCoords(sf::Vector2i((int)focus_x, (int)focus_y))
 			if (window == Window::EDITOR)
@@ -71,8 +72,8 @@ void Engine::input()
 			}
 			else if (window == Window::GAME)
 			{
-				m_pCollider = new Collider("col", sf::IntRect((sf::Vector2i)texture.mapPixelToCoords(sf::Vector2i((int)gameWindowPosX, (int)gameWindowPosY)),
-					sf::Vector2i(0, 0)));
+				m_pCollider = new Collider("col", sf::IntRect(gameMousePos, sf::Vector2i(0, 0)));
+				m_StandartObjects.push_back(new StandartObject(gameMousePos.x, gameMousePos.y, m_pTexture));
 			}
 
 			lastKeyState = true;
