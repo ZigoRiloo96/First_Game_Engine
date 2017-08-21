@@ -72,6 +72,10 @@ void Engine::update(float dtAsSeconds)
 	//	}
 	//}
 	
+	if (m_pEntitySprite != nullptr)
+	{
+
+	}
 	
 	texture.setView(m_View);
 	m_Window.setView(m_View_Window);

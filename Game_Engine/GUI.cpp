@@ -13,6 +13,41 @@ sf::Sprite* pSp(Tile* &tile)
 	return sp;
 }
 
+void Engine::EntityWindow(bool* p_open)
+{
+	if (!ImGui::Begin("Entity_Window", p_open, ImGuiWindowFlags_AlwaysVerticalScrollbar))
+	{
+		ImGui::End();
+		return;
+	}
+
+	ImGui::TextWrapped("Entity:");
+	static int entity_pressed_count = 0;
+
+	if (!m_pEntitySprites.empty())
+	{
+		for (sf::Sprite* s : m_pEntitySprites)
+		{
+			if (ImGui::ImageButton(*s))
+			{
+				entityIsActive = true;
+				delete(m_pEntitySprite);
+				entity_pressed_count += 1;
+				m_pEntitySprite = new Sprite(*s);
+			}
+			ImGui::NewLine();
+		}
+	}
+	if (ImGui::Button("clear"))
+	{
+		entityIsActive = false;
+		delete(m_pEntitySprite);
+		m_pEntitySprite = nullptr;
+	}
+
+	ImGui::End();
+}
+
 void Engine::GameWindow(bool* p_open)
 {
 
@@ -320,11 +355,13 @@ void Engine::GUI()
 	static bool m_pIsGameWindowOpen = false;
 	static bool m_pIsTileEditorWindowOpen = false;
 	static bool m_pIsTestingWindowOpen = false;
+	static bool m_pIsEntityWindowOpen = false;
 
 
 	if (m_pIsGameWindowOpen) GameWindow(&m_pIsGameWindowOpen);
 	if (m_pIsTileEditorWindowOpen) TileEditor(&m_pIsTileEditorWindowOpen);
 	if (m_pIsTestingWindowOpen) Testing(&m_pIsTestingWindowOpen);
+	if (m_pIsEntityWindowOpen) EntityWindow(&m_pIsEntityWindowOpen);
 
 
 	if (ImGui::BeginMainMenuBar())
@@ -343,6 +380,10 @@ void Engine::GUI()
 			if (ImGui::MenuItem("TestingWindow"))
 			{
 				m_pIsTestingWindowOpen = true;
+			}
+			if (ImGui::MenuItem("EntityWindow"))
+			{
+				m_pIsEntityWindowOpen = true;
 			}
 			ImGui::EndMenu();
 		}

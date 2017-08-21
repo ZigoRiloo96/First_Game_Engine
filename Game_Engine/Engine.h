@@ -156,6 +156,17 @@ private:
 	//BEGIN TEXTURES
 	//std::vector<sf::Texture*> textures;
 	sf::Texture* m_pTexture;
+	
+	//loadEntityTextures
+	std::vector<sf::Texture*> m_pEntityTextures;
+	std::vector<sf::Sprite*> m_pEntitySprites;
+	void loadTexturesFromPath();
+	void EntityWindow(bool* p_open);
+	sf::Sprite* m_pEntitySprite = nullptr;
+	bool entityIsActive = false;
+
+	//Render
+	std::vector<sf::Sprite*> m_RenderSprites;
 
 public:
 
@@ -164,7 +175,7 @@ public:
 
 	//tileEditorWindow
 	void TileEditor(bool* p_open);
-	void MakeGrid(Grid** &g, int width, int height);
+	Grid** &MakeGrid(int width, int height);
 	float focus_x = 0, focus_y = 0; //timed
 
 	//testingWindow
