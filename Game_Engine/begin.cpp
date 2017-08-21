@@ -24,12 +24,14 @@ void Engine::begin()
 	m_Objects.push_back(new Object(Vector2f(557, 512), FloatRect(557, 535, 347, 7), "Sprites/zabor_front_h.png", "Sprites/zabor_front.png"));
 
 	//StandartObjects
+	m_pTexture = new sf::Texture();
+	m_pTexture->loadFromFile("Sprites/trawka_01.png");
 	
-	m_StandartObjects.push_back(new StandartObject(788, 313,"Sprites/trawka_01.png"));
-	m_StandartObjects.push_back(new StandartObject(858, 458, "Sprites/trawka_02.png"));
-	m_StandartObjects.push_back(new StandartObject(620, 415, "Sprites/trawka_02.png"));
-	m_StandartObjects.push_back(new StandartObject(665, 415, "Sprites/trawka_02.png"));
-	m_StandartObjects.push_back(new StandartObject(700, 415, "Sprites/trawka_02.png"));
+	//m_StandartObjects.push_back(new StandartObject(788, 313, m_pTexture));
+	//m_StandartObjects.push_back(new StandartObject(858, 458, m_pTexture));
+	//m_StandartObjects.push_back(new StandartObject(620, 415, m_pTexture));
+	//m_StandartObjects.push_back(new StandartObject(665, 415, m_pTexture));
+	//m_StandartObjects.push_back(new StandartObject(700, 415, m_pTexture));
 
 	m_g_texture.loadFromFile("Sprites/gowno.png");
 	m_gowno = Animation(Vector2f(100,100), m_g_texture,Vector2i(24,24),3,Vector2i(0,0));

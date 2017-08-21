@@ -10,7 +10,7 @@ private:
 
 	sf::Vector2f m_Position;
 
-	sf::Texture m_Texture;
+	//sf::Texture m_Texture;
 
 	sf::Sprite m_Sprite;
 
@@ -18,7 +18,7 @@ private:
 	sf::IntRect m_Rect_top;
 
 public:
-	StandartObject(int posX, int posY, std::string);
+	StandartObject(int posX, int posY, const sf::Texture *t);
 	~StandartObject();
 
 	const sf::Sprite& mf_getSprite();

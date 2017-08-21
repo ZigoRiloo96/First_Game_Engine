@@ -1,0 +1,5 @@
+Sprites/cvetok_02.png
+Sprites/cwety.png
+Sprites/trawka_01.png
+Sprites/trawka_02.png
+Sprites/trawka_03.png
