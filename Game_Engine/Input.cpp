@@ -58,6 +58,18 @@ void Engine::input()
 		window = Window::NOTHING;
 	}
 
+	sf::Vector2f p = texture.mapPixelToCoords(sf::Vector2i((int)gameWindowPosX, (int)gameWindowPosY));
+
+	if (m_pEntitySprite != nullptr && entityIsActive)
+	{
+		m_pEntitySprite->setPosition(p);
+
+		if (Mouse::isButtonPressed(Mouse::Button::Left))
+		{
+			m_StandartObjects.push_back(new StandartObject(m_pEntitySprite->getPosition().x, m_pEntitySprite->getPosition().y, m_pEntitySprite->getTexture()));
+		}
+	}
+
 	if (Mouse::isButtonPressed(Mouse::Button::Right))
 	{
 		if (!lastKeyState)

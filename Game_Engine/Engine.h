@@ -164,6 +164,7 @@ private:
 	void EntityWindow(bool* p_open);
 	sf::Sprite* m_pEntitySprite = nullptr;
 	bool entityIsActive = false;
+	std::vector<StandartObject*> m_pEntityDraw;
 
 	//Render
 	std::vector<sf::Sprite*> m_RenderSprites;

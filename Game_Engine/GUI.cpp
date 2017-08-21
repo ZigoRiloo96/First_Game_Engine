@@ -24,6 +24,11 @@ void Engine::EntityWindow(bool* p_open)
 	ImGui::TextWrapped("Entity:");
 	static int entity_pressed_count = 0;
 
+	//if (!ImGui::IsMouseHoveringAnyWindow())
+	//	entityIsActive = false;
+	//else
+	//	entityIsActive = true;
+
 	if (!m_pEntitySprites.empty())
 	{
 		for (sf::Sprite* s : m_pEntitySprites)
@@ -91,9 +96,14 @@ void Engine::GameWindow(bool* p_open)
 		float focus_sz = 32.0f;
 		gameWindowPosX = ImGui::GetMousePos().x - tex_screen_pos.x; if (focus_x < 0.0f) focus_x = 0.0f; else if (focus_x > tex_w - focus_sz) focus_x = tex_w - focus_sz;
 		gameWindowPosY = ImGui::GetMousePos().y - tex_screen_pos.y - focus_sz * 0.5f; if (focus_y < 0.0f) focus_y = 0.0f; else if (focus_y > tex_h - focus_sz) focus_y = tex_h - focus_sz;
-		ImGui::Text("Min: (%.2f, %.2f)", focus_x, focus_y);
-		ImGui::Text("Max: (%.2f, %.2f)", focus_x + focus_sz, focus_y + focus_sz);
+		ImGui::Text("Min: (%.2f, %.2f)", gameWindowPosX, gameWindowPosY);
+		ImGui::Text("Max: (%.2f, %.2f)", gameWindowPosX + focus_sz, gameWindowPosY + focus_sz);
+		entityIsActive = true;
 		ImGui::EndTooltip();
+	}
+	else
+	{
+		entityIsActive = false;
 	}
 
 	ImGui::PopID();
@@ -306,7 +316,6 @@ void Engine::TileEditor(bool* p_open)
 		focus_x = ImGui::GetMousePos().x - tex_screen_pos.x ; if (focus_x < 0.0f) focus_x = 0.0f; else if (focus_x > tex_w) focus_x = tex_w - focus_sz;
 		focus_y = ImGui::GetMousePos().y - tex_screen_pos.y - focus_sz * 0.5f; if (focus_y < 0.0f) focus_y = 0.0f; else if (focus_y > tex_h) focus_y = tex_h - focus_sz;
 		ImGui::Text("Min: (%.2f, %.2f)", focus_x, focus_y);
-		
 		ImGui::EndTooltip();
 	}
 
