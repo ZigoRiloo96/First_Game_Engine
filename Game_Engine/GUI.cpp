@@ -13,6 +13,49 @@ sf::Sprite* pSp(Tile* &tile)
 	return sp;
 }
 
+void Engine::EntityWindow(bool* p_open)
+{
+	if (!ImGui::Begin("Entity_Window", p_open, ImGuiWindowFlags_AlwaysVerticalScrollbar))
+	{
+		ImGui::End();
+		return;
+	}
+
+	ImGui::TextWrapped("Entity:");
+	static int entity_pressed_count = 0;
+	int entityNum = 0;
+
+	//if (!ImGui::IsMouseHoveringAnyWindow())
+	//	entityIsActive = false;
+	//else
+	//	entityIsActive = true;
+
+	if (!m_pEntitySprites.empty())
+	{
+		for (sf::Sprite* s : m_pEntitySprites)
+		{
+			if (ImGui::ImageButton(*s))
+			{
+				entityIsActive = true;
+				delete(m_pEntitySprite);
+				entity_pressed_count += 1;
+				m_pEntitySprite = new Sprite(*s);
+				m_entityID = entityNum;
+			}
+			++entityNum;
+			ImGui::NewLine();
+		}
+	}
+	if (ImGui::Button("clear"))
+	{
+		entityIsActive = false;
+		delete(m_pEntitySprite);
+		m_pEntitySprite = nullptr;
+	}
+
+	ImGui::End();
+}
+
 void Engine::GameWindow(bool* p_open)
 {
 
@@ -35,6 +78,16 @@ void Engine::GameWindow(bool* p_open)
 	ImGui::SameLine();
 	ImGui::Text("%i", window);
 
+	ImGui::SameLine();
+	if (ImGui::Button("save_colliders",sf::Vector2i(0,12))) {
+		testDataSave();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("save_object", sf::Vector2i(0, 12))) {
+		testDataSave();
+	}
+
 	ImGui::PushID(0);
 
 	ImGui::Image(sf::Sprite(texture.getTexture()));
@@ -46,9 +99,14 @@ void Engine::GameWindow(bool* p_open)
 		float focus_sz = 32.0f;
 		gameWindowPosX = ImGui::GetMousePos().x - tex_screen_pos.x; if (focus_x < 0.0f) focus_x = 0.0f; else if (focus_x > tex_w - focus_sz) focus_x = tex_w - focus_sz;
 		gameWindowPosY = ImGui::GetMousePos().y - tex_screen_pos.y - focus_sz * 0.5f; if (focus_y < 0.0f) focus_y = 0.0f; else if (focus_y > tex_h - focus_sz) focus_y = tex_h - focus_sz;
-		ImGui::Text("Min: (%.2f, %.2f)", focus_x, focus_y);
-		ImGui::Text("Max: (%.2f, %.2f)", focus_x + focus_sz, focus_y + focus_sz);
+		ImGui::Text("Min: (%.2f, %.2f)", gameWindowPosX, gameWindowPosY);
+		ImGui::Text("Max: (%.2f, %.2f)", gameWindowPosX + focus_sz, gameWindowPosY + focus_sz);
+		entityIsActive = true;
 		ImGui::EndTooltip();
+	}
+	else
+	{
+		entityIsActive = false;
 	}
 
 	ImGui::PopID();
@@ -261,7 +319,6 @@ void Engine::TileEditor(bool* p_open)
 		focus_x = ImGui::GetMousePos().x - tex_screen_pos.x ; if (focus_x < 0.0f) focus_x = 0.0f; else if (focus_x > tex_w) focus_x = tex_w - focus_sz;
 		focus_y = ImGui::GetMousePos().y - tex_screen_pos.y - focus_sz * 0.5f; if (focus_y < 0.0f) focus_y = 0.0f; else if (focus_y > tex_h) focus_y = tex_h - focus_sz;
 		ImGui::Text("Min: (%.2f, %.2f)", focus_x, focus_y);
-		
 		ImGui::EndTooltip();
 	}
 
@@ -310,11 +367,13 @@ void Engine::GUI()
 	static bool m_pIsGameWindowOpen = false;
 	static bool m_pIsTileEditorWindowOpen = false;
 	static bool m_pIsTestingWindowOpen = false;
+	static bool m_pIsEntityWindowOpen = false;
 
 
 	if (m_pIsGameWindowOpen) GameWindow(&m_pIsGameWindowOpen);
 	if (m_pIsTileEditorWindowOpen) TileEditor(&m_pIsTileEditorWindowOpen);
 	if (m_pIsTestingWindowOpen) Testing(&m_pIsTestingWindowOpen);
+	if (m_pIsEntityWindowOpen) EntityWindow(&m_pIsEntityWindowOpen);
 
 
 	if (ImGui::BeginMainMenuBar())
@@ -333,6 +392,10 @@ void Engine::GUI()
 			if (ImGui::MenuItem("TestingWindow"))
 			{
 				m_pIsTestingWindowOpen = true;
+			}
+			if (ImGui::MenuItem("EntityWindow"))
+			{
+				m_pIsEntityWindowOpen = true;
 			}
 			ImGui::EndMenu();
 		}

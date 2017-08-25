@@ -19,6 +19,8 @@
 #include "TileSet.h"
 #include "Collider.h"
 
+#include "sqlite3.h"
+
 using namespace sf;
 
 struct Grid
@@ -151,6 +153,25 @@ private:
 	bool isColVisible = true;
 	bool lastVkeyState = false;
 
+	//BEGIN TEXTURES
+	//std::vector<sf::Texture*> textures;
+	sf::Texture* m_pTexture;
+	
+	//loadEntityTextures
+	std::vector<sf::Texture*> m_pEntityTextures;
+	std::vector<sf::Sprite*> m_pEntitySprites;
+	void loadTexturesFromPath();
+	void EntityWindow(bool* p_open);
+	sf::Sprite* m_pEntitySprite = nullptr;
+	int m_entityID = 0;
+	bool entityIsActive = false;
+	std::vector<StandartObject*> m_pEntityDraw;
+	void alternativeSave();
+	bool lastLeftKeyState = false;
+
+	//Render
+	std::vector<sf::Sprite*> m_RenderSprites;
+
 public:
 
 	//gameWindow
@@ -158,7 +179,7 @@ public:
 
 	//tileEditorWindow
 	void TileEditor(bool* p_open);
-	void MakeGrid(Grid** &g, int width, int height);
+	Grid** &MakeGrid(int width, int height);
 	float focus_x = 0, focus_y = 0; //timed
 
 	//testingWindow
@@ -168,6 +189,10 @@ public:
 	void OnKeyReleased();
 
 	//lua_scripting
+
+	//SQL
+	void testDataLoad();
+	void testDataSave();
 
 	//playGame
 	void Play(sf::Time timeSinceLastUpdate, sf::Time timePerFrame, sf::Time dt);

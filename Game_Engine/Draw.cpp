@@ -88,7 +88,7 @@ void Engine::draw()
 			}
 		}
 
-		texture.draw(m_Player->getRS());
+		//texture.draw(m_Player->getRS());
 	}
 
 	for (Box* n : m_Boxes)
@@ -133,6 +133,19 @@ void Engine::draw()
 
 		}
 	}
+
+	if (m_pEntitySprite != nullptr)
+	{
+		texture.draw(*m_pEntitySprite);
+	}
+
+	//if (!m_pEntityDraw.empty())
+	//{
+	//	for (StandartObject* s : m_pEntityDraw)
+	//	{
+	//		texture.draw(s->mf_getSprite());
+	//	}
+	//}
 	
 	texture.display();
 	texture_tile.display();

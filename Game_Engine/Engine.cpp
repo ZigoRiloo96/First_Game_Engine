@@ -53,7 +53,8 @@ Engine::Engine()
 	texture_shot.create(500, 500);
 	w_tile = (int)(texture_tile.getSize().x / m_tilesSize);
 	h_tile = (int)(texture_tile.getSize().y / m_tilesSize);
-	MakeGrid(tileGrid, w_tile, h_tile);
+	//MakeGrid(tileGrid, w_tile, h_tile);
+	tileGrid = MakeGrid(w_tile, h_tile);
 	viewPos.x = texture_tile.getSize().x / 4;
 	viewPos.y = texture_tile.getSize().y / 4;
 	m_View_tile.setSize(texture_tile.getSize().x/2, texture_tile.getSize().y/2);
@@ -73,26 +74,15 @@ Engine::Engine()
 	m_gridWidth = (int)(m_gridSize / m_tilesSize);
 	m_gridHeight = (int)(m_gridSize / m_tilesSize);
 
-	m_pGrid = (Grid**)malloc(m_gridHeight * sizeof(Grid*));
-	for (int i = 0; i < m_gridHeight; i++)
-		m_pGrid[i] = (Grid*)malloc(m_gridWidth *sizeof(Grid));
+	m_pGrid = MakeGrid(m_gridWidth, m_gridHeight);
 
-	for (int x = 0, i = 0; i < m_gridWidth; x += m_tilesSize, i++)
-	{
-		for (int y = 0, j = 0; j < m_gridHeight; y += m_tilesSize, j++)
-		{
-			m_pGrid[i][j].isEmpty = true;
-			m_pGrid[i][j].rect.left = x;
-			m_pGrid[i][j].rect.top = y;
-			m_pGrid[i][j].rect.width = m_tilesSize;
-			m_pGrid[i][j].rect.height = m_tilesSize;
-		}
-	}
+	//Entity
+	loadTexturesFromPath();
 }
 
-void Engine::MakeGrid(Grid** &g, int width, int height)
+Grid** &Engine::MakeGrid(int width, int height)
 {
-	g = (Grid**)malloc(height * sizeof(Grid*));
+	Grid** g = (Grid**)malloc(height * sizeof(Grid*));
 	for (int i = 0; i < height; i++)
 		g[i] = (Grid*)malloc(width * sizeof(Grid));
 
@@ -107,6 +97,8 @@ void Engine::MakeGrid(Grid** &g, int width, int height)
 			g[i][j].rect.height = m_tilesSize;
 		}
 	}
+
+	return g;
 }
 
 Vector2i Engine::getResolution()
@@ -140,6 +132,7 @@ Grid **Engine::gridSetUp(int sizeX, int sizeY, int size)
 
 void Engine::start()
 {
+	testDataLoad();
 	
 	timeSinceLastUpdate = Time::Zero;
 
