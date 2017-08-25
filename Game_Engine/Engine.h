@@ -163,8 +163,11 @@ private:
 	void loadTexturesFromPath();
 	void EntityWindow(bool* p_open);
 	sf::Sprite* m_pEntitySprite = nullptr;
+	int m_entityID = 0;
 	bool entityIsActive = false;
 	std::vector<StandartObject*> m_pEntityDraw;
+	void alternativeSave();
+	bool lastLeftKeyState = false;
 
 	//Render
 	std::vector<sf::Sprite*> m_RenderSprites;

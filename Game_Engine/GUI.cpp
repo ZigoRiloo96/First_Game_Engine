@@ -23,6 +23,7 @@ void Engine::EntityWindow(bool* p_open)
 
 	ImGui::TextWrapped("Entity:");
 	static int entity_pressed_count = 0;
+	int entityNum = 0;
 
 	//if (!ImGui::IsMouseHoveringAnyWindow())
 	//	entityIsActive = false;
@@ -39,7 +40,9 @@ void Engine::EntityWindow(bool* p_open)
 				delete(m_pEntitySprite);
 				entity_pressed_count += 1;
 				m_pEntitySprite = new Sprite(*s);
+				m_entityID = entityNum;
 			}
+			++entityNum;
 			ImGui::NewLine();
 		}
 	}

@@ -66,7 +66,18 @@ void Engine::input()
 
 		if (Mouse::isButtonPressed(Mouse::Button::Left))
 		{
-			m_StandartObjects.push_back(new StandartObject(m_pEntitySprite->getPosition().x, m_pEntitySprite->getPosition().y, m_pEntitySprite->getTexture()));
+			if (!lastLeftKeyState)
+			{
+				m_StandartObjects.push_back(new StandartObject(m_pEntitySprite->getPosition().x, m_pEntitySprite->getPosition().y, m_pEntitySprite->getTexture(), m_entityID));
+				lastLeftKeyState = true;
+			}
+		}
+		else
+		{
+			if (lastLeftKeyState)
+			{
+				lastLeftKeyState = false;
+			}
 		}
 	}
 
@@ -85,7 +96,7 @@ void Engine::input()
 			else if (window == Window::GAME)
 			{
 				m_pCollider = new Collider("col", sf::IntRect(gameMousePos, sf::Vector2i(0, 0)));
-				m_StandartObjects.push_back(new StandartObject(gameMousePos.x, gameMousePos.y, m_pTexture));
+				//m_StandartObjects.push_back(new StandartObject(gameMousePos.x, gameMousePos.y, m_pTexture));
 			}
 
 			lastKeyState = true;

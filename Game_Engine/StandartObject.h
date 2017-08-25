@@ -7,6 +7,7 @@ class StandartObject
 {
 private:
 
+	int m_textureID;
 
 	sf::Vector2f m_Position;
 
@@ -19,6 +20,7 @@ private:
 
 public:
 	StandartObject(int posX, int posY, const sf::Texture *t);
+	StandartObject(int posX, int posY, const sf::Texture *t, int ID);
 	~StandartObject();
 
 	const sf::Sprite& mf_getSprite();
@@ -27,5 +29,8 @@ public:
 	//const sf::IntRect& mf_getRect_top();
 
 	const bool isPlayerUp(int playerYpos);
+	const sf::Vector2i& getPosition();
+	const int& getID();
+	void setID(int id);
 };
 

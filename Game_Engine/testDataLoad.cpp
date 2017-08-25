@@ -69,6 +69,11 @@ void sql_stmt(const char* stmt)
 	}
 }
 
+void loadStandartObjects()
+{
+
+}
+
 void Engine::testDataLoad()
 {
 	if (sqlite3_open("data/test.db", &db) != SQLITE_OK) {
@@ -77,6 +82,7 @@ void Engine::testDataLoad()
 	}
 
 	Records records = select_stmt("SELECT * FROM COLLIDERS");
+	Records StandartObjects_records = select_stmt("SELECT * FROM StandartObjects");
 	sqlite3_close(db);
 
 	for (auto& record : records) {
@@ -91,6 +97,94 @@ void Engine::testDataLoad()
 		}
 		m_Colliders.push_back(new Collider("first", sf::IntRect(col[1], col[2], col[3], col[4])));
 	}
+
+	for (auto& record : StandartObjects_records) {
+		// do something with your records
+		int col[5];
+		int i = 0;
+		for (string s : record)
+		{
+			col[i] = std::stoi(s);
+			std::cout << col[i] << "\n";
+			i++;
+		}
+		m_StandartObjects.push_back(new StandartObject(col[1], col[2], m_pEntityTextures.at(col[3])));
+	}
+}
+
+void Engine::alternativeSave()
+{
+	sqlite3 *db;
+	char *zErrMsg = 0;
+	int rc;
+	const char *sql;
+
+	rc = sqlite3_open("data/test.db", &db);
+
+	if (rc) {
+		fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+		return;
+	}
+	else {
+		fprintf(stderr, "Opened database successfully\n");
+	}
+
+	/* Create SQL statement */
+	//sql = "CREATE TABLE COLLIDERS("  \
+		//	"ID INT PRIMARY KEY NOT NULL," \
+	//	"posX           INT ," \
+	//	"posY           INT ," \
+	//	"sizeX          INT ," \
+	//	"sizeY          INT );";
+
+	string coli = " ";
+
+	coli = "DELETE FROM COLLIDERS;";
+
+	std::cout << coli << "\n";
+	sql = coli.c_str();
+
+	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+
+	coli = " ";
+	int i = 1;
+
+	for (Collider* c : m_Colliders)
+	{
+		coli += "INSERT INTO COLLIDERS (ID,posX,posY,sizeX,sizeY) VALUES (";
+		coli += std::to_string(i);
+		coli += ", ";
+		coli += std::to_string(c->getPosition().x);
+		coli += ", ";
+		coli += std::to_string(c->getPosition().y);
+		coli += ", ";
+		coli += std::to_string(c->getSize().x);
+		coli += ", ";
+		coli += std::to_string(c->getSize().y);
+		coli += "); ";
+		++i;
+	}
+
+	std::cout << coli << "\n";
+	sql = coli.c_str();
+
+	//sql = new char[coli.size() + 1];
+	//std::copy(coli.begin(), coli.end(), sql);
+	//sql[coli.size()] = '\0'; // don't forget the terminating 0
+
+
+	/* Execute SQL statement */
+	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+
+	if (rc != SQLITE_OK) {
+		fprintf(stderr, "SQL error: %s\n", zErrMsg);
+		sqlite3_free(zErrMsg);
+	}
+	else {
+		fprintf(stdout, "Records created successfully\n");
+	}
+
+	sqlite3_close(db);
 }
 
 void Engine::testDataSave()
@@ -120,9 +214,28 @@ void Engine::testDataSave()
 
 	string coli = " ";
 
+	coli = "DELETE FROM COLLIDERS;";
+
+	std::cout << coli << "\n";
+	sql = coli.c_str();
+
+	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+
+	coli = "DELETE FROM StandartObjects;";
+
+	std::cout << coli << "\n";
+	sql = coli.c_str();
+
+	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+
+	coli = "";
+	int i = 1;
+
 	for (Collider* c : m_Colliders)
 	{
-		coli += "INSERT INTO COLLIDERS (ID,posX,posY,sizeX,sizeY) VALUES (1, ";
+		coli += "INSERT INTO COLLIDERS (ID,posX,posY,sizeX,sizeY) VALUES (";
+		coli += std::to_string(i);
+		coli += ", ";
 		coli += std::to_string(c->getPosition().x);
 		coli += ", ";
 		coli += std::to_string(c->getPosition().y);
@@ -131,6 +244,44 @@ void Engine::testDataSave()
 		coli += ", ";
 		coli += std::to_string(c->getSize().y);
 		coli += "); ";
+		++i;
+	}
+
+	std::cout << coli << "\n";
+	sql = coli.c_str();
+
+	//sql = new char[coli.size() + 1];
+	//std::copy(coli.begin(), coli.end(), sql);
+	//sql[coli.size()] = '\0'; // don't forget the terminating 0
+
+
+	/* Execute SQL statement */
+	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+
+	if (rc != SQLITE_OK) {
+		fprintf(stderr, "SQL error: %s\n", zErrMsg);
+		sqlite3_free(zErrMsg);
+	}
+	else {
+		fprintf(stdout, "Records created successfully\n");
+	}
+
+	//StandartObjectsSave
+	coli = "";
+	i = 0;
+
+	for (StandartObject* c : m_StandartObjects)
+	{
+		coli += "INSERT INTO StandartObjects (ID,posX,posY,numTexture) VALUES (";
+		coli += std::to_string(i);
+		coli += ", ";
+		coli += std::to_string(c->mf_getSprite().getPosition().x);
+		coli += ", ";
+		coli += std::to_string(c->mf_getSprite().getPosition().y);
+		coli += ", ";
+		coli += std::to_string(c->getID());
+		coli += "); ";
+		++i;
 	}
 
 	std::cout << coli << "\n";
