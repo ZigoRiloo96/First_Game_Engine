@@ -108,7 +108,7 @@ void Engine::testDataLoad()
 			std::cout << col[i] << "\n";
 			i++;
 		}
-		m_StandartObjects.push_back(new StandartObject(col[1], col[2], m_pEntityTextures.at(col[3])));
+		m_StandartObjects.push_back(new StandartObject(col[1], col[2], m_pEntityTextures.at(col[3]), col[3]));
 	}
 }
 
