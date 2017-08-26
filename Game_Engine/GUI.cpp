@@ -80,12 +80,12 @@ void Engine::GameWindow(bool* p_open)
 
 	ImGui::SameLine();
 	if (ImGui::Button("save_colliders",sf::Vector2i(0,12))) {
-		testDataSave();
+		testDataSave("data/test.db");
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("save_object", sf::Vector2i(0, 12))) {
-		testDataSave();
+		testDataSave("data/test.db");
 	}
 
 	ImGui::PushID(0);

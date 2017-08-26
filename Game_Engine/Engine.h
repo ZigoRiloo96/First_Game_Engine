@@ -191,8 +191,8 @@ public:
 	//lua_scripting
 
 	//SQL
-	void testDataLoad();
-	void testDataSave();
+	void testDataLoad(const char *file);
+	void testDataSave(const char *file);
 
 	//playGame
 	void Play(sf::Time timeSinceLastUpdate, sf::Time timePerFrame, sf::Time dt);

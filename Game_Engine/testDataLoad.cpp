@@ -74,9 +74,9 @@ void loadStandartObjects()
 
 }
 
-void Engine::testDataLoad()
+void Engine::testDataLoad(const char *file)
 {
-	if (sqlite3_open("data/test.db", &db) != SQLITE_OK) {
+	if (sqlite3_open(file, &db) != SQLITE_OK) {
 		std::cerr << "Could not open database.\n";
 		return;
 	}
@@ -112,89 +112,14 @@ void Engine::testDataLoad()
 	}
 }
 
-void Engine::alternativeSave()
+void Engine::testDataSave(const char *file)
 {
 	sqlite3 *db;
 	char *zErrMsg = 0;
 	int rc;
 	const char *sql;
 
-	rc = sqlite3_open("data/test.db", &db);
-
-	if (rc) {
-		fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-		return;
-	}
-	else {
-		fprintf(stderr, "Opened database successfully\n");
-	}
-
-	/* Create SQL statement */
-	//sql = "CREATE TABLE COLLIDERS("  \
-		//	"ID INT PRIMARY KEY NOT NULL," \
-	//	"posX           INT ," \
-	//	"posY           INT ," \
-	//	"sizeX          INT ," \
-	//	"sizeY          INT );";
-
-	string coli = " ";
-
-	coli = "DELETE FROM COLLIDERS;";
-
-	std::cout << coli << "\n";
-	sql = coli.c_str();
-
-	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
-
-	coli = " ";
-	int i = 1;
-
-	for (Collider* c : m_Colliders)
-	{
-		coli += "INSERT INTO COLLIDERS (ID,posX,posY,sizeX,sizeY) VALUES (";
-		coli += std::to_string(i);
-		coli += ", ";
-		coli += std::to_string(c->getPosition().x);
-		coli += ", ";
-		coli += std::to_string(c->getPosition().y);
-		coli += ", ";
-		coli += std::to_string(c->getSize().x);
-		coli += ", ";
-		coli += std::to_string(c->getSize().y);
-		coli += "); ";
-		++i;
-	}
-
-	std::cout << coli << "\n";
-	sql = coli.c_str();
-
-	//sql = new char[coli.size() + 1];
-	//std::copy(coli.begin(), coli.end(), sql);
-	//sql[coli.size()] = '\0'; // don't forget the terminating 0
-
-
-	/* Execute SQL statement */
-	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
-
-	if (rc != SQLITE_OK) {
-		fprintf(stderr, "SQL error: %s\n", zErrMsg);
-		sqlite3_free(zErrMsg);
-	}
-	else {
-		fprintf(stdout, "Records created successfully\n");
-	}
-
-	sqlite3_close(db);
-}
-
-void Engine::testDataSave()
-{
-	sqlite3 *db;
-	char *zErrMsg = 0;
-	int rc;
-	const char *sql;
-
-	rc = sqlite3_open("data/test.db", &db);
+	rc = sqlite3_open(file, &db);
 
 	if (rc) {
 		fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
