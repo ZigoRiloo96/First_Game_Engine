@@ -11,6 +11,8 @@ void Engine::draw()
 	m_Window.draw(m_sProgramBackground);
 
 	texture_tile.clear();
+
+	object_texture.clear();
 	//texture_tile.draw(sf::Sprite(gridTex));
 
 	//if (!m_Tiles.empty())
@@ -139,6 +141,16 @@ void Engine::draw()
 		texture.draw(*m_pEntitySprite);
 	}
 
+	if (object_sprite != nullptr)
+	{
+		object_texture.draw(*object_sprite);
+	}
+
+	if (pObject != nullptr)
+	{
+		object_texture.draw(pObject->getRS());
+	}
+
 	//if (!m_pEntityDraw.empty())
 	//{
 	//	for (StandartObject* s : m_pEntityDraw)
@@ -150,6 +162,7 @@ void Engine::draw()
 	texture.display();
 	texture_tile.display();
 	texture_shot.display();
+	object_texture.display();
 	//texture_creat.display();
 	
 	//m_Window.draw(m_Player.getRS());

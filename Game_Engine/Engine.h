@@ -166,11 +166,25 @@ private:
 	int m_entityID = 0;
 	bool entityIsActive = false;
 	std::vector<StandartObject*> m_pEntityDraw;
-	void alternativeSave();
 	bool lastLeftKeyState = false;
 
 	//Render
 	std::vector<sf::Sprite*> m_RenderSprites;
+
+	//object editor
+	RenderTexture object_texture;
+	sf::View object_view;
+	sf::Sprite* object_sprite = nullptr;
+	Object* pObject = nullptr;
+	std::vector<Object*> objects;
+	const char* active_window[4] = { "GameWindow", "ObjectEditor", "TileEditor", "Empty" };
+	int windowChoice;
+	sf::IntRect* pObjectRect = nullptr;
+	float objectWindowPosX;
+	float objectWindowPosY;
+
+	enum windowCh { GM , OE , TE , Empty };
+	windowCh wc;
 
 public:
 
@@ -189,6 +203,9 @@ public:
 	void OnKeyReleased();
 
 	//lua_scripting
+
+	//object editor
+	void ObjectEditor(bool* p_open);
 
 	//SQL
 	void testDataLoad(const char *file);

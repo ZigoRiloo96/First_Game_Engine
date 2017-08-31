@@ -34,6 +34,7 @@ private:
 public:
 	Object(Vector2f pos, FloatRect r, std::string t_hide, std::string t);
 	Object(Vector2f pos, FloatRect r, FloatRect topRect, std::string t_hide, std::string t);
+	Object(Vector2f pos, sf::Texture t_hide, sf::Texture t);
 	Object(Vector2f pos, FloatRect r, std::string t);
 	Object(FloatRect r);
 
@@ -46,6 +47,8 @@ public:
 
 	FloatRect getRect_down();
 	FloatRect getRect_top();
+
+	void setRect_top(sf::FloatRect r);
 
 	RectangleShape getRS();
 

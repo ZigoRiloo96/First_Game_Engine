@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include <iostream>
 
 enum Objects
 {
@@ -13,6 +14,70 @@ sf::Sprite* pSp(Tile* &tile)
 	return sp;
 }
 
+void Engine::ObjectEditor(bool* p_open)
+{
+	if (!ImGui::Begin("Object_Editor", p_open))
+	{
+		ImGui::End();
+		return;
+	}
+
+	ImGui::TextWrapped("Object Editor:");
+
+
+	ImGui::PushID(0);
+	ImGui::Image(sf::Sprite(object_texture.getTexture()));
+	ImGui::PopID();
+
+	static char name_object[16];
+	static string name_object_s;
+
+
+	ImGui::InputText(":name", name_object, sizeof(name_object), 1);
+	//ImGui::SameLine();
+	name_object_s = "";
+	name_object_s += name_object;
+	name_object_s += ".png";
+	if (ImGui::Button("save")) {
+		
+	}
+
+	if (ImGui::Button("delete_object")) {
+		delete (pObject);
+		pObject = nullptr;
+	}
+
+	ImVec2 tex_screen_pos = ImGui::GetCursorScreenPos();
+	float tex_w = (float)object_texture.getSize().x;
+	float tex_h = (float)object_texture.getSize().y;
+
+	objectWindowPosX = ImGui::GetMousePos().x - tex_screen_pos.x; //- tex_screen_pos.x; if (objectWindowPosX < 0.0f) objectWindowPosX = 0.0f; else if (objectWindowPosX > tex_w - 32) objectWindowPosX = tex_w - 32;
+	objectWindowPosY = ImGui::GetMousePos().y; //- tex_screen_pos.y + 32 * 0.5f; //- tex_screen_pos.y - 32 * 0.5f; if (objectWindowPosY < 0.0f) objectWindowPosY = 0.0f; else if (objectWindowPosY > tex_h - 32) objectWindowPosY = tex_h - 32;
+
+	ImGui::Combo("ActiveWindow", &windowChoice, active_window, IM_ARRAYSIZE(active_window));
+	
+
+	switch (windowChoice)
+	{
+	case 0:
+		wc = windowCh::GM;
+		break;
+	case 1:
+		wc = windowCh::OE;
+		break;
+	case 2:
+		wc = windowCh::TE;
+		break;
+	case 3:
+		wc = windowCh::Empty;
+		break;
+	default:
+		break;
+	}
+
+	ImGui::End();
+}
+
 void Engine::EntityWindow(bool* p_open)
 {
 	if (!ImGui::Begin("Entity_Window", p_open, ImGuiWindowFlags_AlwaysVerticalScrollbar))
@@ -25,11 +90,6 @@ void Engine::EntityWindow(bool* p_open)
 	static int entity_pressed_count = 0;
 	int entityNum = 0;
 
-	//if (!ImGui::IsMouseHoveringAnyWindow())
-	//	entityIsActive = false;
-	//else
-	//	entityIsActive = true;
-
 	if (!m_pEntitySprites.empty())
 	{
 		for (sf::Sprite* s : m_pEntitySprites)
@@ -38,9 +98,17 @@ void Engine::EntityWindow(bool* p_open)
 			{
 				entityIsActive = true;
 				delete(m_pEntitySprite);
+				delete(object_sprite);
 				entity_pressed_count += 1;
 				m_pEntitySprite = new Sprite(*s);
+				object_sprite = new Sprite(*s);
+				object_sprite->setPosition(0, 0);
+				object_view.setSize(object_sprite->getTexture()->getSize().x, object_sprite->getTexture()->getSize().y);
+				object_view.setCenter(object_sprite->getTexture()->getSize().x/2, object_sprite->getTexture()->getSize().y/2);
+				object_texture.setView(object_view);
 				m_entityID = entityNum;
+
+				pObject = new Object(sf::Vector2f(0, 0), *s->getTexture(), *s->getTexture());
 			}
 			++entityNum;
 			ImGui::NewLine();
@@ -50,6 +118,8 @@ void Engine::EntityWindow(bool* p_open)
 	{
 		entityIsActive = false;
 		delete(m_pEntitySprite);
+		delete(object_sprite);
+		object_sprite = nullptr;
 		m_pEntitySprite = nullptr;
 	}
 
@@ -166,23 +236,6 @@ void Engine::Testing(bool* p_open)
 		m_obj->setPosition(m_mousePos_sfml);
 	}
 
-
-	//if (p_tile != nullptr)
-	//{
-	//	m_inProcess = true;
-
-	//	for (int i = 0; i < w; i++)
-	//	{
-	//		for (int j = 0; j < h; j++)
-	//		{
-	//			if (grid[i][j].rect.contains(m_mousePos_sfml))
-	//			{
-	//				p_tile->setPosition(sf::Vector2i(grid[i][j].rect.left, grid[i][j].rect.top));
-	//			}
-	//		}
-	//	}
-	//}
-
 	ImGui::Text("Mouse clicked:");  for (int i = 0; i < IM_ARRAYSIZE(m_io.MouseDown); i++) if (ImGui::IsMouseClicked(i)) { ImGui::SameLine(); ImGui::Text("b%i", i); }
 
 	if (ImGui::IsMouseClicked(1) && m_inProcess && m_obj != nullptr)
@@ -192,27 +245,12 @@ void Engine::Testing(bool* p_open)
 
 	if (ImGui::IsMouseClicked(1) && m_inProcess && m_pTile != nullptr)
 	{
-		//m_Tiles.push_back(new Tile(p_tile->getPosition(), p_tile->getRect(), t)); //TODO: sprite push
 		m_spriteTiles.push_back(pSp(m_pTile));
 	}
 
 	ImVec2 tex_screen_pos = ImGui::GetCursorScreenPos();
 	float tex_w = (float)ImGui::GetIO().Fonts->TexWidth;
 	float tex_h = (float)ImGui::GetIO().Fonts->TexHeight;
-	ImTextureID tex_id = ImGui::GetIO().Fonts->TexID;
-
-	//ImTextureID tex_id = 
-
-
-	//for (int i = 0; i < 8; i++)
-	//{
-	//	ImGui::PushID(i);
-	//	int frame_padding = -1 + i;     // -1 = uses default padding
-	//	if (ImGui::ImageButton(tex_id, ImVec2(32, 32), ImVec2(0, 0), ImVec2(32.0f / tex_w, 32 / tex_h), frame_padding, ImColor(0, 0, 0, 255)))
-	//		pressed_count += 1;
-	//	ImGui::PopID();
-	//	ImGui::SameLine();
-	//}
 
 	static char text1[16];
 	static string text21;
@@ -258,7 +296,6 @@ void Engine::Testing(bool* p_open)
 		ImGui::NewLine();
 	}
 
-	//ImGui::Text("Hello");
 	ImGui::End();
 }
 
@@ -368,12 +405,14 @@ void Engine::GUI()
 	static bool m_pIsTileEditorWindowOpen = false;
 	static bool m_pIsTestingWindowOpen = false;
 	static bool m_pIsEntityWindowOpen = false;
+	static bool m_pIsObjectEditorOpen = false;
 
 
 	if (m_pIsGameWindowOpen) GameWindow(&m_pIsGameWindowOpen);
 	if (m_pIsTileEditorWindowOpen) TileEditor(&m_pIsTileEditorWindowOpen);
 	if (m_pIsTestingWindowOpen) Testing(&m_pIsTestingWindowOpen);
 	if (m_pIsEntityWindowOpen) EntityWindow(&m_pIsEntityWindowOpen);
+	if (m_pIsObjectEditorOpen) ObjectEditor(&m_pIsObjectEditorOpen);
 
 
 	if (ImGui::BeginMainMenuBar())
@@ -396,6 +435,10 @@ void Engine::GUI()
 			if (ImGui::MenuItem("EntityWindow"))
 			{
 				m_pIsEntityWindowOpen = true;
+			}
+			if (ImGui::MenuItem("ObjectEditor"))
+			{
+				m_pIsObjectEditorOpen = true;
 			}
 			ImGui::EndMenu();
 		}

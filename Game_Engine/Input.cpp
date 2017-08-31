@@ -86,8 +86,14 @@ void Engine::input()
 		if (!lastKeyState)
 		{
 			sf::Vector2i gameMousePos = (sf::Vector2i)texture.mapPixelToCoords(sf::Vector2i((int)gameWindowPosX, (int)gameWindowPosY));
+			sf::Vector2i objectMousePos = (sf::Vector2i)object_texture.mapPixelToCoords(sf::Vector2i((int)objectWindowPosX, (int)objectWindowPosY));
 			//OnKeyClick();
-			//(sf::Vector2i)texture_tile.mapPixelToCoords(sf::Vector2i((int)focus_x, (int)focus_y))
+
+			if (wc == windowCh::OE)
+			{
+				pObjectRect = new sf::IntRect(objectMousePos, sf::Vector2i(0, 0));
+			}
+
 			if (window == Window::EDITOR)
 			{
 				m_pCollider = new Collider("col", sf::IntRect((sf::Vector2i)texture_tile.mapPixelToCoords(sf::Vector2i((int)focus_x, (int)focus_y)),
@@ -112,6 +118,11 @@ void Engine::input()
 			m_pCollider->setSize(sf::Vector2i(std::abs((int)texture.mapPixelToCoords(sf::Vector2i((int)gameWindowPosX, (int)gameWindowPosY)).x - m_pCollider->getPosition().x)
 				, std::abs((int)texture.mapPixelToCoords(sf::Vector2i((int)gameWindowPosX, (int)gameWindowPosY)).y - m_pCollider->getPosition().y)));
 		}	
+		if (wc == windowCh::OE)
+		{
+			pObjectRect->width = std::abs((int)object_texture.mapPixelToCoords(sf::Vector2i((int)objectWindowPosX, (int)objectWindowPosY)).x - pObjectRect->left);
+			pObjectRect->height = std::abs((int)object_texture.mapPixelToCoords(sf::Vector2i((int)objectWindowPosX, (int)objectWindowPosY)).y - pObjectRect->top);
+		}
 	} 
 	else
 	{

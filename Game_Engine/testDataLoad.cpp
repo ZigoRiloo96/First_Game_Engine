@@ -3,19 +3,6 @@
 #include "stdlib.h"
 #include <iostream>
 
-//int sqlite3_open(
-//	const char *filename,   /* Database filename (UTF-8) */
-//	sqlite3 **ppDb          /* OUT: SQLite db handle */
-//);
-//
-//int sqlite3_exec(
-//	sqlite3*,                                  /* An open database */
-//	const char *sql,                           /* SQL to be evaluated (UTF-8) */
-//	int(*callback)(void*, int, char**, char**),  /* Callback function */
-//	void *,                                    /* 1st argument to callback */
-//	char **errmsg                              /* Error msg written here */
-//);
-
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 	int i;
 	for (i = 0; i < argc; i++) {
@@ -175,11 +162,6 @@ void Engine::testDataSave(const char *file)
 	std::cout << coli << "\n";
 	sql = coli.c_str();
 
-	//sql = new char[coli.size() + 1];
-	//std::copy(coli.begin(), coli.end(), sql);
-	//sql[coli.size()] = '\0'; // don't forget the terminating 0
-
-
 	/* Execute SQL statement */
 	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
@@ -211,11 +193,6 @@ void Engine::testDataSave(const char *file)
 
 	std::cout << coli << "\n";
 	sql = coli.c_str();
-
-	//sql = new char[coli.size() + 1];
-	//std::copy(coli.begin(), coli.end(), sql);
-	//sql[coli.size()] = '\0'; // don't forget the terminating 0
-
 
 	/* Execute SQL statement */
 	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);

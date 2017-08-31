@@ -78,6 +78,18 @@ Engine::Engine()
 
 	//Entity
 	loadTexturesFromPath();
+
+	//
+	object_sprite = nullptr;
+	object_texture.create(250,250);
+	object_view.setSize(100, 100);
+	object_view.setCenter(50, 50);
+	object_texture.setView(object_view);
+	pObject = nullptr;
+
+	//
+	windowChoice = 0;
+	wc = windowCh::GM;
 }
 
 Grid** &Engine::MakeGrid(int width, int height)

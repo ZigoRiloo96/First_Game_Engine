@@ -53,6 +53,30 @@ Object::Object(Vector2f pos, FloatRect r, FloatRect topRect, std::string t_hide,
 	}
 }
 
+Object::Object(Vector2f pos, sf::Texture t_hide, sf::Texture t) :
+	m_Position(pos),
+	m_Mode(MODE::NORMAL),
+	m_Rect_top(sf::FloatRect(sf::Vector2f(0,0), sf::Vector2f(0, 0)))
+{
+	//textures
+	m_Texture_hide = t_hide;
+	m_Texture = t;
+
+	//sprites
+	m_Sprite_hide.setTexture(m_Texture_hide);
+	m_Sprite.setTexture(m_Texture);
+	m_Sprite_hide.setPosition(pos);
+	m_Sprite.setPosition(pos);
+
+
+	//testing
+	//{
+	//	m_RS.setSize(Vector2f(r.width, r.height));
+	//	m_RS.setFillColor(Color::Green);
+	//	m_RS.setPosition(Vector2f(r.left, r.top));
+	//}
+}
+
 Object::Object(Vector2f pos, FloatRect r, std::string t) :
 	m_Rect_down(r),
 	m_Position(pos),
@@ -103,6 +127,12 @@ FloatRect Object::getRect_down()
 FloatRect Object::getRect_top()
 {
 	return m_Rect_top;
+}
+void Object::setRect_top(sf::FloatRect r)
+{
+	m_Rect_top = r;
+	m_RS.setPosition(r.left,r.top);
+	m_RS.setSize(sf::Vector2f(r.width, r.height));
 }
 Sprite Object::getSprite_hide()
 {
