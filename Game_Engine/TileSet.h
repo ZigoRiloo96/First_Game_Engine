@@ -6,15 +6,15 @@
 class TileSet
 {
 private:
-	sf::Texture m_Texture;
-	sf::IntRect m_Rect;
+    sf::Texture m_Texture;
+    sf::IntRect m_Rect;
 
 public:
-	TileSet();
-	TileSet(sf::Texture t);
+    TileSet();
+    TileSet(sf::Texture t);
 
-	Tile **makeTile(int size);
+    Tile **makeTile(int size);
 
-	void setTexture(const sf::Texture& t);
+    void setTexture(const sf::Texture& t);
 };
 

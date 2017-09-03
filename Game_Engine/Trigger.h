@@ -5,13 +5,13 @@
 class Trigger
 {
 private:
-	sf::IntRect m_Rect;
+    sf::IntRect m_Rect;
 
 public:
-	Trigger(sf::IntRect ir);
-	~Trigger();
+    Trigger(sf::IntRect ir);
+    ~Trigger();
 
-	sf::IntRect getRect();
-	bool OnTrigger(sf::IntRect r);
+    sf::IntRect getRect();
+    bool OnTrigger(sf::IntRect r);
 };
 
